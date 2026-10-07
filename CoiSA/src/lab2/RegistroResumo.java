@@ -1,56 +1,69 @@
 package lab2;
 
 public class RegistroResumo {
-    private int cont;
     private Resumo[] resumos;
+    private int quantidade; // Controla quantos resumos já foram adicionados
+    private int proximoIndice; // Controla a posição da próxima inserção (buffer circular)
 
     public RegistroResumo(int numeroDeResumos) {
         this.resumos = new Resumo[numeroDeResumos];
-        this.cont = 0;
+        this.quantidade = 0;
+        this.proximoIndice = 0;
     }
-
-    public void adicionaResumo(String tema, String conteudo){
-        this.resumos[this.cont] = new Resumo(tema, conteudo);
-        this.cont++;
-    }
-
-    public int conta(){
-        return this.cont;
-    }
-
-    public String[] pegaResumos(){
-        String[] novaLista = new String[this.resumos.length];
-        for (int i = 0; i < this.conta(); i++) {
-            novaLista[i] = this.resumos[i].getTema() + ": " + this.resumos[i].getConteudo();
-        }
-        return novaLista;
-    }
-
-    public String imprimeResumos(){
-        String saida = "";
-        saida = saida + "- " + this.conta() + " resumo(s) cadastrado(s)\n";
-        saida = saida + "- ";
-
-        for (int i = 0; i < this.conta(); i++) {
-            saida = saida + this.resumos[i].getTema();
-            if (i < this.conta() - 1) {
-                saida = saida + " | ";
+    //metodo para adicionar um resumo
+    public void adiciona(String tema, String conteudo) {
+        // Verifica se já existe um resumo com o mesmo tema (regra: Não pode existir mais de um)
+        for (int i = 0; i < this.quantidade; i++) {
+            if (this.resumos[i].getTema().equals(tema)) {
+                // Se o tema já existe, apenas atualizamos o conteúdo e encerramos o método
+                this.resumos[i] = new Resumo(tema, conteudo);
+                return;
             }
         }
-        return saida;
+        //se o tema não existe, adicionamos no array usando o índice circular
+        this.resumos[proximoIndice] = new Resumo(tema, conteudo);
+
+        //Aumenta a quantidade apenas se o array ainda não estiver cheio
+        if (this.quantidade < this.resumos.length) {
+            this.quantidade++;
+        }
+        // Atualiza o próximo índice de forma circular (se chegar no limite, volta pro 0)
+        this.proximoIndice = (this.proximoIndice + 1) % this.resumos.length;
+    }
+    //Metodo que retorna um array de Strings com os resumos formatados
+    public String[] pegaResumos() {
+        String[] formatoRetorno = new String[this.quantidade];
+        for (int i = 0; i < this.quantidade; i++) {
+            formatoRetorno[i] = this.resumos[i].getTema() + ": " + this.resumos[i].getConteudo();
+        }
+        return formatoRetorno;
+    }
+    //Metodo que imprime a string formatada com os temas
+    public String imprimeResumos() {
+        StringBuilder resultado = new StringBuilder();
+
+        resultado.append("- ").append(this.quantidade).append(" resumo(s) cadastrado(s)\n- ");
+
+        for (int i = 0; i < this.quantidade; i++) {
+            resultado.append(this.resumos[i].getTema());
+            if (i < this.quantidade - 1) {
+                resultado.append(" | "); // Adiciona o separador entre os temas
+            }
+        }
+        return resultado.toString();
+    }
+    // Metodo que retorna a quantidade de resumos cadastrados
+    public int conta() {
+        return this.quantidade;
     }
 
-    public int contaResumos(){
-
-    }
-
-    public boolean temResumo(String tema){
-        for (int i = 0; i < this.conta(); i++) {
-            if (this.resumos[i].getTema().equals(temaProcurado)) {
+    //Metodo que verifica se um tema existe
+    public boolean temResumo(String tema) {
+        for (int i = 0; i < this.quantidade; i++) {
+            if (this.resumos[i].getTema().equals(tema)) {
                 return true;
             }
         }
         return false;
-
     }
 }

@@ -38,7 +38,6 @@ public class RegistroTempoOnline {
         } else {
             return false;
         }
-
     }
 
     @Override

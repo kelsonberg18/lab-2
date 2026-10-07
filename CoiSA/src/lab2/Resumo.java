@@ -1,5 +1,5 @@
 package lab2;
-
+//CLasse auxiliar apenas para usar de atributo em RegistroResumo
 public class Resumo {
     private String tema;
     private String conteudo;
