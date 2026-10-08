@@ -5,14 +5,16 @@ public class Descanso {
     private int numSemanas;
     private String statusGeral;
 
+    // construtor inicializado já começa cansado
     public Descanso() {
         this.statusGeral = "cansado";
 
     }
+    // metodo que vai ser usado como parametro no main para calcular se tá cansado ou não
     public void defineHorasDescanso(int valor) {
         horasDescanso = valor;
     }
-
+    // da mesma forma, metodo usado com parametro para ser usado no main
     public void defineNumeroSemanas(int valor) {
         numSemanas = valor;
     }

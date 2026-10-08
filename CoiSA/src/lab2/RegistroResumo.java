@@ -3,7 +3,7 @@ package lab2;
 public class RegistroResumo {
     private Resumo[] resumos;
     private int quantidade; // Controla quantos resumos já foram adicionados
-    private int proximoIndice; // Controla a posição da próxima inserção (buffer circular)
+    private int proximoIndice; // Controla a posição da próxima inserção
 
     public RegistroResumo(int numeroDeResumos) {
         this.resumos = new Resumo[numeroDeResumos];
@@ -12,22 +12,22 @@ public class RegistroResumo {
     }
     //metodo para adicionar um resumo
     public void adiciona(String tema, String conteudo) {
-        // Verifica se já existe um resumo com o mesmo tema (regra: Não pode existir mais de um)
+        // Verifica se já existe um resumo com o mesmo tema
         for (int i = 0; i < this.quantidade; i++) {
             if (this.resumos[i].getTema().equals(tema)) {
-                // Se o tema já existe, apenas atualizamos o conteúdo e encerramos o método
+                // Se o tema já existe, apenas atualizamos o conteúdo e encerramos o metoodo
                 this.resumos[i] = new Resumo(tema, conteudo);
                 return;
             }
         }
-        //se o tema não existe, adicionamos no array usando o índice circular
+        //se o tema não existe, adicionamos no array usando o índice
         this.resumos[proximoIndice] = new Resumo(tema, conteudo);
 
         //Aumenta a quantidade apenas se o array ainda não estiver cheio
         if (this.quantidade < this.resumos.length) {
             this.quantidade++;
         }
-        // Atualiza o próximo índice de forma circular (se chegar no limite, volta pro 0)
+        // Atualiza o próximo índice de forma circular
         this.proximoIndice = (this.proximoIndice + 1) % this.resumos.length;
     }
     //Metodo que retorna um array de Strings com os resumos formatados

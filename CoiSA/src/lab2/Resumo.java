@@ -16,5 +16,4 @@ public class Resumo {
     public String getConteudo(){
         return conteudo;
     }
-
 }
